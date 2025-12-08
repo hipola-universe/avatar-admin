@@ -24,21 +24,22 @@ const borderColor = 0x000000; // Black border
 const borderWidth = 4;
 const backgroundColor = 0xFFFFFF; // White background
 const textColor = '#000000'; // Black text
-var bubbleBob, bubbleAlice;
+var bubbleBob, bubbleAlice, bubblePat;
 
-var strokeBob, strokeAlice;
+var strokeBob, strokeAlice, strokePat;
 function preload () {
     this.load.image('ground', 'platform.png');
     this.load.image('background', 'sky.png');
     this.load.spritesheet('bob', 'dude.png', { frameWidth: 32, frameHeight: 48 });
     this.load.spritesheet('alice', 'dude2.png', { frameWidth: 32, frameHeight: 48 });
+    this.load.image('pat', 'spaceship1.png', { frameWidth: 32, frameHeight: 48 });
 }
 
 
 
-var bob, alice;
+var bob, alice, pat;
 var bubble;
-var bobMessage, aliceMessage;
+var bobMessage, aliceMessage, patMessage;
 
 function create () {
     this.add.image(400, 300, 'background');
@@ -49,6 +50,7 @@ function create () {
     platforms.create(400, 568, 'ground').setScale(2).refreshBody();
     bob = this.add.sprite(200, 520, 'bob');
     alice = this.add.sprite(650, 520, 'alice');
+   
     bob.setScale(2);
     alice.setScale(2);
     bob.setFrame(5);
@@ -75,6 +77,8 @@ function create () {
     });
 
     
+
+    
    
     // Initialize SSE connection
 
@@ -83,6 +87,26 @@ function create () {
         var data = JSON.parse(event.data);
         handleServerEvent(data, this);
     };
+
+    var joinersSource = new EventSource('/initChat/joiners');
+    joinersSource.onmessage = (event) => {
+        var data = JSON.parse(event.data);
+        if(data.sender === 'pat') {
+            handleJoiner(data, this);
+        }
+    };
+
+}
+
+function handleJoiner(data, scene) {
+    pat = scene.add.sprite(650, 0, 'pat');
+    scene.tweens.add({
+        targets: pat,
+        delay: 1000,  // Delay before starting the tween
+        y: 400,  // Ending x coordinate
+        duration: 2000,  // Duration in milliseconds (2000 ms = 2 seconds)
+        ease: 'Linear'
+    });
 }
 
 function handleServerEvent(data, scene) {
@@ -102,7 +126,7 @@ function handleServerEvent(data, scene) {
     // Remove the temporary text object
     tempText.destroy();
 
-    if (data.from === 'bob' && data.to === 'alice') {
+    if (data.from === 'bob') {
         bob.setFrame(4);
         bubbleBob = scene.add.graphics();
         bubbleBob.lineStyle(borderWidth, borderColor);
@@ -121,17 +145,14 @@ function handleServerEvent(data, scene) {
         strokeBob.lineTo(bob.x, 500);  // Ending point (x2, y2)
         strokeBob.strokePath();
 
-        //aliceMessage.setText('');  
-       // aliceBubble.destroy();       
         setTimeout(() => {
-            //bobMessage.setText('');
             bobMessage.destroy();
             bubbleBob.destroy();
             strokeBob.clear();
             bob.setFrame(5);
         }, 7000);
     }
-    if (data.from === 'alice' && data.to === 'bob') {
+    if (data.from === 'alice') {
         alice.setFrame(4);
         bubbleAlice = scene.add.graphics();
         bubbleAlice.lineStyle(borderWidth, borderColor);
@@ -147,16 +168,35 @@ function handleServerEvent(data, scene) {
         strokeAlice.lineStyle(2, "#000000", 1);
         strokeAlice.beginPath();
         strokeAlice.moveTo(300 + (boxWidth/2), 120 + boxHeight);  // Starting point (x1, y1)
-        strokeAlice.lineTo(650, 500);  // Ending point (x2, y2)
+        strokeAlice.lineTo(alice.x, 500);  // Ending point (x2, y2)
         strokeAlice.strokePath();
-        //bobMessage.setText('');
-        //bubbleBob.destroy();
         setTimeout(() => {
-            //aliceMessage.setText('');
             alice.setFrame(0);
             aliceMessage.destroy();
             bubbleAlice.destroy();
             strokeAlice.clear()}, 7000);
+    }
+    if (data.from === 'pat') {
+        bubblePat = scene.add.graphics();
+        bubblePat.lineStyle(borderWidth, borderColor);
+        bubblePat.fillStyle(backgroundColor, 1);
+        bubblePat.strokeRoundedRect(300, 120, boxWidth, boxHeight, cornerRadius);
+        bubblePat.fillRoundedRect(300, 120, boxWidth, boxHeight, cornerRadius);
+        patMessage = scene.add.text(320, 140, data.message,{ 
+            fontSize: '16px', 
+            fill: textColor, 
+            wordWrap: { width: boxWidth - padding * 2 } 
+        });
+        strokePat = scene.add.graphics();
+        strokePat.lineStyle(2, "#000000", 1);
+        strokePat.beginPath();
+        strokePat.moveTo(300 + (boxWidth/2), 120 + boxHeight);  // Starting point (x1, y1)
+        strokePat.lineTo(pat.x, 380);  // Ending point (x2, y2)
+        strokePat.strokePath();
+        setTimeout(() => {
+            patMessage.destroy();
+            bubblePat.destroy();
+            strokePat.clear()}, 7000);
     }
 }
 

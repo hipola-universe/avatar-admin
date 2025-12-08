@@ -3,17 +3,22 @@ document.addEventListener("DOMContentLoaded", function() {
 
     var bleepSource = new EventSource('/initChat/bleeps');
 
+   
+
     bleepSource.onmessage = (event) => {
         var data = JSON.parse(event.data);
         handleBleep(data);
     };
 
+    
     function handleBleep(data) {
         // Create a new div element
         const newPost = document.createElement('div');
         newPost.className = 'post';
-        newPost.innerHTML = `<span class="bleeper"> ${data.avatar}</span> posted:<br> ${data.message}`;
+        newPost.innerHTML = `<span class="bleeper"> ${data.avatar}</span> posted:<br> ${data.message} <br> <img src="${data.imageURL}" alt="Thumbnail" class="thumbnail" onclick="openOverlay('${data.imageURL}')">`;
         liveFeedContainer.prepend(newPost);
     }
+
+  
     
 });

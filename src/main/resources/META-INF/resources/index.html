@@ -8,8 +8,28 @@
 </head>
 <body>
     <div class="container">
+        <div class="overlay" id="imageOverlay">
+            <span class="close-btn" onclick="closeOverlay()">&times;</span>
+            <img src="" alt="Full Size" class="full-image" id="fullImage">
+        </div>
         <div class="phaser-container" id="phaser-container"></div>
         <div class="retro-buttons">
+            <div class="retro-label">
+                <label for="from" class="retro-label">From:</label>
+                <select id="from" class="retro-select">
+                    <option value="bob">bob</option>
+                    <option value="alice">alice</option>
+                    <option value="pat">pat</option>
+                </select>
+            </div>
+            <div class="retro-label">
+                <label for="to" class="retro-label">To:</label>
+                <select id="to" class="retro-select">
+                    <option value="bob">bob</option>
+                    <option value="alice">alice</option>
+                    <option value="pat">pat</option>
+                </select>
+            </div>
             <button id="chat" class="retro-btn">Start chat !</button>
             <button id="stop" class="retro-btn">Stop chat ...</button>
             <button id="recordButton" class="retro-btn record-button">Interact</button>
@@ -23,5 +43,17 @@
     <script src="livefeed.js"></script>
     <script src="button-actions.js"></script>
     <script src="recorder.js"></script>
+    <script>
+          // Open the overlay and set the image source
+  function openOverlay(src) {
+    document.getElementById("imageOverlay").style.display = "flex";
+    document.getElementById("fullImage").src = src;
+  }
+
+  // Close the overlay
+  function closeOverlay() {
+    document.getElementById("imageOverlay").style.display = "none";
+  }
+    </script>
 </body>
 </html>

@@ -4,7 +4,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const button2 = document.getElementById('stop');
 
     button1.addEventListener('click', function() {
-
+        const fromValue = document.getElementById('from').value;
+        const toValue = document.getElementById('to').value;
         button1.classList.add('retro-btn-active');
 
         // Remove the class after animation ends to reset
@@ -12,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function() {
             button1.classList.remove('retro-btn-active');
         }, 400);
 
-        fetch('/initChat/bob/alice') // Replace with the actual URL for the GET request
+        fetch('/initChat/' + fromValue + '/' + toValue) // Replace with the actual URL for the GET request
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok ' + response.statusText);
@@ -30,7 +31,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     button2.addEventListener('click', function() {
         button2.classList.add('retro-btn-active');
-
+        const fromValue = document.getElementById('from').value;
+        const toValue = document.getElementById('to').value;
         // Remove the class after animation ends to reset
         setTimeout(() => {
             button2.classList.remove('retro-btn-active');
