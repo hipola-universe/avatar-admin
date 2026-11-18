@@ -4,17 +4,29 @@ import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.is;
 
+/** Needs Docker: Dev Services start Redis and Kafka for the test. */
 @QuarkusTest
 class ChatResourceTest {
+
     @Test
-    void testHelloEndpoint() {
+    void nobodyOnThePlanetAtStartup() {
         given()
-          .when().get("/hello")
+          .when().get("/initChat/avatars")
           .then()
              .statusCode(200)
-             .body(is("Hello from Quarkus REST"));
+             .body("$", is(empty()));
+    }
+
+    @Test
+    void noConversationAtStartup() {
+        given()
+          .when().get("/initChat/conversations")
+          .then()
+             .statusCode(200)
+             .body("$", is(empty()));
     }
 
 }

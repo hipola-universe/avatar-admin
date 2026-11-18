@@ -329,3 +329,64 @@ body, html {
 .live-feed::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(180deg, #88ffaa, #00ff88);
 }
+
+/* ------------------------------------------------------------------ topdown layout: the scene takes all the room */
+body.topdown .container { grid-template-rows: minmax(0, 1fr) auto; width: 96%; height: 94%; }
+body.topdown .phaser-container { min-height: 0; height: 100%; }
+body.topdown .phaser-container canvas { display: block; }
+body:not(.topdown) .live-feed { height: 604px; }
+.hud { display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 220px; }
+.hud-count { font-size: 18px; color: #00ff88; }
+.hud-status { min-height: 16px; color: #ffe300; }
+.game-instructions b { color: #ffe300; }
+
+/* ------------------------------------------------------------------ right panel with tabs */
+.live-feed.tabbed { display: flex; flex-direction: column; overflow: hidden; min-height: 0; }
+.panel-tabs { display: flex; flex: none; border-bottom: 2px solid #00ff88; background: linear-gradient(90deg, #2a2a3e, #1a1a2e); }
+.panel-tab { flex: 1; padding: 12px 6px; background: transparent; border: 0; border-bottom: 3px solid transparent; color: #6fae93;
+    font: bold 15px 'Courier New', monospace; letter-spacing: 1px; cursor: pointer; }
+.panel-tab:hover { color: #00ff88; }
+.panel-tab.active { color: #00ff88; border-bottom-color: #00ff88; text-shadow: 0 0 8px rgba(0, 255, 136, 0.8); }
+.tab-badge:not(:empty) { display: inline-block; margin-left: 8px; padding: 1px 7px; border-radius: 10px; background: #ffae00; color: #1a1a2e; font-size: 12px; text-shadow: none; }
+.panel-view { flex: 1; min-height: 0; overflow-y: auto; }
+.panel-view.hidden, .hidden { display: none !important; }
+.panel-empty { margin: 18px; color: #6f7f95; font: 13px 'Courier New', monospace; text-align: center; }
+.panel-view::-webkit-scrollbar, #talk-detail::-webkit-scrollbar { width: 8px; }
+.panel-view::-webkit-scrollbar-thumb, #talk-detail::-webkit-scrollbar-thumb { background: #00ff88; border-radius: 4px; }
+.post { color: #e6edf3; font: 13px/1.45 'Courier New', monospace; overflow-wrap: anywhere; }
+.post .thumbnail { margin-top: 8px; }
+
+/* discussions: list */
+#discussions { display: flex; flex-direction: column; overflow: hidden; }
+#talk-list, #talk-detail { flex: 1; min-height: 0; overflow-y: auto; }
+.talk-row { margin: 8px; padding: 10px 12px; border: 1px solid #2f6f58; border-radius: 6px; background: rgba(0, 255, 136, 0.05); cursor: pointer; font: 13px 'Courier New', monospace; color: #c9d6e2; }
+.talk-row:hover { border-color: #00ff88; background: rgba(0, 255, 136, 0.12); }
+.talk-head { font-size: 15px; display: flex; align-items: center; gap: 6px; }
+.talker { font-weight: bold; }
+.talk-arrow { color: #6f7f95; }
+.talk-state { margin-left: auto; padding: 1px 8px; border-radius: 10px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+.talk-state.live { background: #00ff88; color: #10201a; animation: live-pulse 1.2s ease-in-out infinite alternate; }
+.talk-state.ended { border: 1px solid #55657a; color: #8494a8; }
+@keyframes live-pulse { from { opacity: 0.55; } to { opacity: 1; } }
+.talk-meta { margin-top: 4px; font-size: 11px; color: #6f7f95; }
+.talk-preview { margin-top: 6px; color: #9fb0c0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* discussions: one conversation in full */
+.talk-bar { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; gap: 10px; padding: 8px 10px; background: #161a2c; border-bottom: 1px solid #2f6f58; font: 14px 'Courier New', monospace; }
+.talk-back { padding: 5px 9px; background: transparent; border: 1px solid #00ff88; border-radius: 4px; color: #00ff88; font: 12px 'Courier New', monospace; cursor: pointer; white-space: nowrap; }
+.talk-back:hover { background: rgba(0, 255, 136, 0.15); }
+.talk-messages { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
+.talk-msg { max-width: 88%; padding: 8px 11px 9px; border-radius: 10px; border: 1px solid; border-left-width: 4px; background: rgba(255, 255, 255, 0.05); font: 14px/1.5 'Courier New', monospace; color: #eef2f6; }
+.talk-msg.left { align-self: flex-start; }
+.talk-msg.right { align-self: flex-end; border-left-width: 1px; border-right-width: 4px; }
+.talk-msg-head { display: flex; justify-content: space-between; gap: 14px; margin-bottom: 3px; font-size: 12px; }
+.talk-msg-head span:last-child { color: #6f7f95; font-weight: normal; }
+.talk-msg-text { overflow-wrap: anywhere; white-space: pre-wrap; }
+.talk-stop { margin-top: 4px; font-size: 11px; color: #8494a8; font-style: italic; }
+
+/* ------------------------------------------------------------------ voice from the sky: what happened */
+.voice-toast { position: fixed; left: 50%; top: 18px; transform: translate(-50%, -140%); z-index: 50; max-width: 70%; padding: 12px 18px; border-radius: 8px;
+    border: 2px solid #00ff88; background: #10182b; color: #e6edf3; font: 15px/1.4 'Courier New', monospace; box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5); transition: transform 0.25s ease; }
+.voice-toast.show { transform: translate(-50%, 0); }
+.voice-toast.ok { border-color: #ffe300; }
+.voice-toast.error { border-color: #ff4d6d; color: #ffd0d8; }

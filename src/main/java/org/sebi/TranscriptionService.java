@@ -9,7 +9,8 @@ import org.jboss.resteasy.reactive.RestForm;
 import jakarta.ws.rs.POST;
 
 
-@RegisterRestClient(baseUri = "https://api.groq.com/openai/v1/audio/transcriptions")
+/** Speech to text through an OpenAI-compatible endpoint: Groq by default, see application.properties. */
+@RegisterRestClient(configKey = "transcription")
 public interface TranscriptionService {
     
     @POST

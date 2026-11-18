@@ -41,3 +41,6 @@ nb-configuration.xml
 
 # Plugin directory
 /.quarkus/cli/plugins/
+
+# Voice recordings saved by POST /initChat/audio
+uploads/
