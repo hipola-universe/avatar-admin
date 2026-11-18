@@ -1,4 +1,4 @@
-// Right-hand panel, shared by the stage view (index.html) and the topdown view (topdown.html).
+// Right-hand panel, shared by the prairie view (index.html) and the archived stage view (stage.html).
 // Two tabs: LIVE FEED (the bleeps) and DISCUSSIONS (every conversation, readable in full).
 
 // One colour per avatar, given in order of first appearance and shared with the Phaser scene.

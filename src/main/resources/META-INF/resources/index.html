@@ -2,11 +2,11 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Planet Hipola</title>
+    <title>Planet Hipola - Prairie</title>
     <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
     <link rel="stylesheet" href="styles.css?v=4">
 </head>
-<body>
+<body class="topdown">
     <div class="container">
         <div class="overlay" id="imageOverlay">
             <span class="close-btn" onclick="closeOverlay()">&times;</span>
@@ -14,43 +14,33 @@
         </div>
         <div class="phaser-container" id="phaser-container"></div>
         <div class="retro-buttons">
-            <div class="retro-label">
-                <label for="from" class="retro-label">From:</label>
-                <select id="from" class="retro-select">
-                    <option value="bob">bob</option>
-                    <option value="alice">alice</option>
-                    <option value="pat">pat</option>
-                </select>
+            <div class="game-instructions">
+                <span class="retro-label">🖱 Drag an avatar to move it &middot; drag the ground to scroll &middot; wheel to zoom</span>
+                <span class="retro-label">⌨ Arrows / WASD scroll &middot; <b>G</b> grab / drop nearest &middot; <b>F</b> follow &middot; <b>H</b> home</span>
+                <span class="retro-label">💬 Two avatars that come close start talking</span>
             </div>
-            <div class="retro-label">
-                <label for="to" class="retro-label">To:</label>
-                <select id="to" class="retro-select">
-                    <option value="bob">bob</option>
-                    <option value="alice">alice</option>
-                    <option value="pat">pat</option>
-                </select>
+            <div class="hud">
+                <span class="retro-label hud-count" id="avatar-count">0 avatar</span>
+                <span class="retro-label hud-status" id="hud-status"></span>
             </div>
-            <button id="chat" class="retro-btn">Start chat !</button>
-            <button id="stop" class="retro-btn">Stop chat ...</button>
             <button id="recordButton" class="retro-btn record-button">Interact</button>
         </div>
         <div class="live-feed"></div>
     </div>
-    <script src="phaser-scene.js?v=4"></script>
     <script src="livefeed.js?v=4"></script>
-    <script src="button-actions.js?v=4"></script>
+    <script src="topdown.js?v=4"></script>
     <script src="recorder.js?v=4"></script>
     <script>
-          // Open the overlay and set the image source
-  function openOverlay(src) {
-    document.getElementById("imageOverlay").style.display = "flex";
-    document.getElementById("fullImage").src = src;
-  }
+        // Open the overlay and set the image source
+        function openOverlay(src) {
+            document.getElementById("imageOverlay").style.display = "flex";
+            document.getElementById("fullImage").src = src;
+        }
 
-  // Close the overlay
-  function closeOverlay() {
-    document.getElementById("imageOverlay").style.display = "none";
-  }
+        // Close the overlay
+        function closeOverlay() {
+            document.getElementById("imageOverlay").style.display = "none";
+        }
     </script>
 </body>
 </html>
